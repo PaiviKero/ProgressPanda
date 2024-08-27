@@ -1,0 +1,8 @@
+<div class="goal-list">
+    <h2>Your Goals</h2>
+    <ul>
+      <li *ngFor="let goal of goals">
+        <app-goal [goal]="goal"></app-goal>
+      </li>
+    </ul>
+</div>
