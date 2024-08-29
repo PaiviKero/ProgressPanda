@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { environment } from '../../../environments/environment.development';
 
 
 export interface Goal {
@@ -14,20 +15,19 @@ export interface Goal {
   providedIn: 'root'
 })
 export class GoalService {
-  private apiUrl = 'http://localhost:3000/api/goals'; // Adjust the URL according to your backend
+  private apiEndPoint = 'goals'; // Adjust the URL according to your backend
 
   constructor(private http: HttpClient) {}
 
   getAllGoals(): Observable<Goal[]> {
-    console.log("get all goals", this.apiUrl)
-    return this.http.get<Goal[]>(this.apiUrl).pipe(
+    console.log("env", environment.apiUrl)
+    return this.http.get<Goal[]>(environment.apiUrl+this.apiEndPoint).pipe(
       catchError(this.handleError)
     );
   }
 
   getGoalById(id: number): Observable<Goal> {
-    console.log("get one goal", `${this.apiUrl}/${id}`)
-    return this.http.get<Goal>(`${this.apiUrl}/${id}`).pipe(
+    return this.http.get<Goal>(`${environment.apiUrl}/${this.apiEndPoint}/${id}`).pipe(
       catchError(this.handleError)
     );
   }
