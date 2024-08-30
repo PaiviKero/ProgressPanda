@@ -1,3 +1,3 @@
 export const environment = {
-    apiUrl: "https://progresspanda-backend.onrender.com:8000/api/"
+    apiUrl: "https://progresspanda-backend.onrender.com/api/"
 };

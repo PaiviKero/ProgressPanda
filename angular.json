@@ -83,6 +83,9 @@
             "production": {
               "buildTarget": "ProgressPanda:build:production"
             },
+            "staging": {
+              "buildTarget": "ProgressPanda:build:staging"
+            },
             "development": {
               "buildTarget": "ProgressPanda:build:development"
             }
