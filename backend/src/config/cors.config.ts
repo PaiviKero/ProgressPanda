@@ -1,6 +1,6 @@
 import  { CorsOptions } from 'cors';
 
-const allowedOrigins = ['http://localhost:4200', 'http://localhost:8080', 'https://progresspanda.onrender.com/'];
+const allowedOrigins = ['http://localhost:4200', 'http://localhost:8080', 'https://progresspanda.onrender.com'];
 
 export const corsOptions: CorsOptions = {
   origin: allowedOrigins,
