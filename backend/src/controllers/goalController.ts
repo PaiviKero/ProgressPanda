@@ -13,7 +13,7 @@ const getAllGoals = async (req: Request, res: Response, next: NextFunction) => {
 const getGoalById = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const goal = await goalService.getGoalById(req.params.id);
-    if (!goal) {
+    if (goal) {
       return res.status(404).json({ message: 'goal not found' });
     }
     res.status(200).json(goal);
