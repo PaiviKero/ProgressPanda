@@ -42,3 +42,37 @@ jobs:
         env:
           deploy_url: ${{ secrets.RENDER_BACKEND_DEPLOY_HOOK_URL }}
         run: curl "$deploy_url"
+
+  test_frontend:
+    name: Run Tests on frontend
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Using Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install
+        run: npm ci
+      - name: Run linting
+        run: npm run lint
+      - name: Run tests
+        run: npm run test
+
+  deploy_frontend:
+    name: Deploy frontend
+    needs: test_frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Deploy
+        env:
+          deploy_url: ${{ secrets.RENDER_FRONTEND_DEPLOY_HOOK_URL }}
+        run: curl "$deploy_url"
