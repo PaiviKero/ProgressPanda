@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
+/* eslint  @typescript-eslint/no-unused-vars: [1, { vars: 'all', 'argsIgnorePattern': 'next' } ] */
 const errorHandler = (
   err: Error,
   req: Request,
