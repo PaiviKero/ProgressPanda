@@ -8,8 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "staging_build": "ng build --configuration staging",
     "staging": "ng serve --host 0.0.0.0",
-    "test": "ng test --watch=false --browsers=ChromeHeadless",
-    "test_dev": "ng test",
+    "test_headless": "ng test --watch=false --browsers=ChromeHeadless",
+    "test": "ng test",
     "lint": "ng lint"
   },
   "private": true,
