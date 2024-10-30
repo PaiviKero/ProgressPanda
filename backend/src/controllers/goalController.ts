@@ -22,4 +22,13 @@ const getGoalById = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export default { getAllGoals, getGoalById };
+const addGoal = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const goal = await goalService.addGoal(req.body.name);
+    res.status(200).json(goal);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { getAllGoals, getGoalById, addGoal };

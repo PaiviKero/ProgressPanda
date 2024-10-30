@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-
 
 export interface Goal {
   id: number;
@@ -12,37 +11,47 @@ export interface Goal {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GoalService {
-  private apiEndPoint = 'goals'; // Adjust the URL according to your backend
+  private static apiEndPoint = 'goals';
 
   constructor(private http: HttpClient) {}
 
-  getAllGoals(): Observable<Goal[]> {
-    console.log("env", environment.apiUrl)
-    return this.http.get<Goal[]>(environment.apiUrl+this.apiEndPoint).pipe(
-      catchError(this.handleError)
-    );
+  public static getApiPoint(): string {
+    return environment.apiUrl + this.apiEndPoint;
+  }
+
+  public getAllGoals(): Observable<Goal[]> {
+    return this.http
+      .get<Goal[]>(GoalService.getApiPoint())
+      .pipe(retry(3), catchError(this.handleError));
   }
 
   getGoalById(id: number): Observable<Goal> {
-    return this.http.get<Goal>(`${environment.apiUrl}/${this.apiEndPoint}/${id}`).pipe(
-      catchError(this.handleError)
-    );
+    return this.http
+      .get<Goal>(`${GoalService.getApiPoint()}/${id}`)
+      .pipe(catchError(this.handleError));
+  }
+
+  addGoal(name: string): Observable<Goal> {
+    return this.http
+      .post<Goal>(`${GoalService.getApiPoint()}/`, { name })
+      .pipe(catchError(this.handleError));
   }
 
   // Error handling
   private handleError(error: HttpErrorResponse) {
-    if (error.error instanceof ErrorEvent) {
+    if (error.status === 0) {
       // Client-side error
-      console.error('An error occurred:', error.error.message);
+      console.error('An error occurred:', error.message);
     } else {
       // Backend error
       console.error(
         `Backend returned code ${error.status}, ` +
-        `body was: ${error.error}`);
+          `body was: ${JSON.stringify(error.error)}`
+      );
     }
-    return throwError('Something went wrong; please try again later.');
+    return throwError(() => error);
   }
 }

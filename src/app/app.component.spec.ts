@@ -1,11 +1,20 @@
 import { TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
+
 import { AppComponent } from './app.component';
+import { GoalService } from './core/services/goal.service';
+import { mockGoals } from '../../backend/src/services/mockData';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
+      providers: [GoalService],
     }).compileComponents();
+
+    spyOn(GoalService.prototype, 'getAllGoals').and.callFake(() => {
+      return of(mockGoals);
+    });
   });
 
   it('should create the app', () => {
@@ -22,8 +31,9 @@ describe('AppComponent', () => {
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, ProgressPanda');
+    expect(compiled.querySelector('h1')?.textContent).toContain(app.title);
   });
 });

@@ -1,0 +1,13 @@
+<div>
+  <form (ngSubmit)="addGoal()">
+    <label for="goalInput">New Goal:</label>
+    <input
+      type="text"
+      id="goalInput"
+      [(ngModel)]="newGoal"
+      name="goal"
+      required
+    />
+    <button type="submit">Add Goal</button>
+  </form>
+</div>

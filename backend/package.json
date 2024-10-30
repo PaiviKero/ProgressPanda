@@ -8,7 +8,8 @@
     "test": "jest",
     "build": "tsc",
     "dev2": "tsc && node dist/app.js",
-    "lint": "eslint"
+    "lint": "eslint",
+    "coverage": "jest --coverage"
   },
   "author": "",
   "license": "ISC",

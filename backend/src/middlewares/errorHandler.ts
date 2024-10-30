@@ -7,10 +7,15 @@ const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  console.error(err);
-  res.status(500).json({
-    message: err.message || 'Internal Server Error',
-  });
+  if (err.message.startsWith('Missing data')) {
+    res.status(400).json({
+      message: err.message,
+    });
+  } else {
+    res.status(500).json({
+      message: err.message || 'Internal Server Error',
+    });
+  }
 };
 
 export default errorHandler;

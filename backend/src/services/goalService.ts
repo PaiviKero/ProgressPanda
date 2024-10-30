@@ -1,4 +1,4 @@
-import { mockGoals } from "./mockData";
+import { mockGoals } from './mockData';
 
 export interface Goal {
   id: number;
@@ -12,8 +12,18 @@ const getAllGoals = async (): Promise<Goal[]> => {
 };
 
 const getGoalById = async (id: string): Promise<Goal | undefined> => {
-  return goals.find(goal => goal.id === parseInt(id));
+  return goals.find((goal) => goal.id === parseInt(id));
 };
 
-export default { getAllGoals, getGoalById };
-  
+const addGoal = async (name: string): Promise<Goal> => {
+  let newGoal: Goal;
+  if (name) {
+    const maxId = Math.max(...goals.map((goal) => goal.id));
+    newGoal = { id: maxId + 1, name };
+    goals.push(newGoal);
+    return newGoal;
+  }
+  throw new Error('Missing data: name');
+};
+
+export default { getAllGoals, getGoalById, addGoal };

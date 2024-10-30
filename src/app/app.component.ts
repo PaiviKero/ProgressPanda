@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { GoalListComponent } from "./features/goal-list/goal-list.component";
-import { GoalComponent } from "./features/goal/goal.component";
+import { GoalListComponent } from './features/goal-list/goal-list.component';
+import { GoalComponent } from './features/goal/goal.component';
 
 @Component({
   selector: 'app-root',
