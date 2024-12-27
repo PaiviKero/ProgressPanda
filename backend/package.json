@@ -9,7 +9,7 @@
     "build": "tsc",
     "dev2": "tsc && node dist/app.js",
     "lint": "eslint",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage --detectOpenHandles"
   },
   "author": "",
   "license": "ISC",

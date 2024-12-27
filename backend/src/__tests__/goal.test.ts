@@ -1,7 +1,7 @@
 import supertest from 'supertest';
 import createServer from '../utils/server';
 import goalService from '../services/goalService';
-import { mockGoals } from '../../../testdata/mockData';
+import { mockGoals } from '../sharedtestdata/mockData';
 import Goal from '../models/goalModel';
 
 const app = createServer();

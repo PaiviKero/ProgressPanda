@@ -3,7 +3,7 @@ import { of } from 'rxjs';
 
 import { AppComponent } from './app.component';
 import { GoalService } from './core/services/goal.service';
-import { mockGoals } from '../../testdata/mockData';
+import { mockGoals } from '../../backend/src/sharedtestdata/mockData';
 
 describe('AppComponent', () => {
   beforeEach(async () => {

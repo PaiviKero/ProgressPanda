@@ -1,22 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AddGoalComponent } from './add-goal.component';
-import { newMockGoal } from '../../../../testdata/mockData';
+import { newMockGoal } from '../../../../backend/src/sharedtestdata/mockData';
 import { GoalService } from '../../core/services/goal.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 describe('AddGoalComponent', () => {
   let component: AddGoalComponent;
   let fixture: ComponentFixture<AddGoalComponent>;
-  let spiedFunction: jasmine.Spy;
+  let goalServiceMock: jasmine.SpyObj<GoalService>;
 
   beforeEach(async () => {
+    goalServiceMock = jasmine.createSpyObj('GoalService', ['addGoal']);
+
     await TestBed.configureTestingModule({
       imports: [AddGoalComponent],
-      providers: [GoalService],
+      providers: [{ provide: GoalService, useValue: goalServiceMock }],
     }).compileComponents();
-
-    spiedFunction = spyOn(GoalService.prototype, 'addGoal');
 
     fixture = TestBed.createComponent(AddGoalComponent);
     component = fixture.componentInstance;
@@ -25,7 +25,7 @@ describe('AddGoalComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    expect(spiedFunction).toHaveBeenCalledTimes(0);
+    expect(goalServiceMock.addGoal).toHaveBeenCalledTimes(0);
   });
 
   it('input should update the newGoal', () => {
@@ -56,7 +56,7 @@ describe('AddGoalComponent', () => {
     fixture.detectChanges();
     expect(component.newGoal).toBe(goalName);
 
-    spiedFunction.and.callFake(() => {
+    goalServiceMock.addGoal.and.callFake(() => {
       return of(newMockGoal);
     });
 
@@ -76,6 +76,23 @@ describe('AddGoalComponent', () => {
       )
       .toBe('');
 
-    expect(spiedFunction).toHaveBeenCalledTimes(1);
+    expect(goalServiceMock.addGoal).toHaveBeenCalledTimes(1);
+  });
+
+  it('should handle error when addGoal fails', () => {
+    const consoleSpy = spyOn(console, 'error'); // Spy on console.error
+    goalServiceMock.addGoal.and.returnValue(
+      throwError(() => new Error('Test Error'))
+    );
+
+    component.newGoal = 'Test Goal';
+    component.addGoal();
+
+    expect(goalServiceMock.addGoal).toHaveBeenCalledWith('Test Goal');
+    expect(consoleSpy).toHaveBeenCalledWith(
+      'Error adding goal:',
+      jasmine.any(Error)
+    );
+    expect(consoleSpy.calls.mostRecent().args[1].message).toBe('Test Error');
   });
 });

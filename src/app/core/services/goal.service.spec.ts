@@ -5,7 +5,10 @@ import {
 } from '@angular/common/http/testing';
 
 import { GoalService } from './goal.service';
-import { mockGoals, newMockGoal } from '../../../../testdata/mockData';
+import {
+  mockGoals,
+  newMockGoal,
+} from '../../../../backend/src/sharedtestdata/mockData';
 import { HttpErrorResponse } from '@angular/common/http';
 
 describe('GoalService', () => {

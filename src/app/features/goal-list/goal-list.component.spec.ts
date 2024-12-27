@@ -6,9 +6,12 @@ import {
 } from '@angular/core/testing';
 
 import { GoalListComponent } from './goal-list.component';
-import { mockGoals, newMockGoal } from '../../../../testdata/mockData';
-import { GoalService } from '../../core/services/goal.service';
-import { of } from 'rxjs';
+import {
+  mockGoals,
+  newMockGoal,
+} from '../../../../backend/src/sharedtestdata/mockData';
+import { Goal, GoalService } from '../../core/services/goal.service';
+import { Observable, of, throwError } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { GoalComponent } from '../goal/goal.component';
 import { AddGoalComponent } from '../add-goal/add-goal.component';
@@ -16,18 +19,18 @@ import { AddGoalComponent } from '../add-goal/add-goal.component';
 describe('GoalListComponent', () => {
   let component: GoalListComponent;
   let fixture: ComponentFixture<GoalListComponent>;
-  let spiedFunction: jasmine.Spy;
+  let getAllGoalsSpy: jasmine.Spy<() => Observable<Goal[]>>;
 
   beforeEach(async () => {
+    getAllGoalsSpy = spyOn(GoalService.prototype, 'getAllGoals').and.callFake(
+      () => {
+        return of(mockGoals);
+      }
+    );
+
     await TestBed.configureTestingModule({
       imports: [GoalListComponent, GoalComponent, AddGoalComponent],
-      providers: [GoalService],
     }).compileComponents();
-
-    spiedFunction = spyOn(GoalService.prototype, 'getAllGoals');
-    spiedFunction.and.callFake(() => {
-      return of(mockGoals);
-    });
 
     fixture = TestBed.createComponent(GoalListComponent);
     component = fixture.componentInstance;
@@ -36,14 +39,18 @@ describe('GoalListComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    expect(spiedFunction).toHaveBeenCalledTimes(1);
+    expect(getAllGoalsSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should populate goals with data from getAllGoals', () => {
+    expect(component.goals).toEqual(mockGoals);
   });
 
   it('should call server-call testCall()', waitForAsync(
     inject([GoalService], (goalService: GoalService) => {
       goalService.getAllGoals().subscribe((returnGoals) => {
         expect(returnGoals).toBe(mockGoals);
-        expect(spiedFunction).toHaveBeenCalled();
+        expect(getAllGoalsSpy).toHaveBeenCalled();
       });
     })
   ));
@@ -97,5 +104,18 @@ describe('GoalListComponent', () => {
     expect(appGoalComponent).toBeTruthy(); // Ensure app-goal is present
     const goalInstance = appGoalComponent.componentInstance as GoalComponent;
     expect(goalInstance.goal).toBe(newMockGoal); // Ensure correct goal is passed
+  });
+
+  it('should handle error when getAllGoals fails', () => {
+    const consoleSpy = spyOn(console, 'error'); // Spy on console.error
+    getAllGoalsSpy.and.callFake((): Observable<Goal[]> => {
+      return throwError(() => new Error('Test Error'));
+    });
+    component.fetchGoals();
+
+    expect(getAllGoalsSpy).toHaveBeenCalled();
+
+    expect(consoleSpy).toHaveBeenCalledWith(jasmine.any(Error));
+    expect(consoleSpy.calls.mostRecent().args[0].message).toBe('Test Error');
   });
 });

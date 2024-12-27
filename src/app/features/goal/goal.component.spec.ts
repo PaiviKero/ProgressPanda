@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GoalComponent } from './goal.component';
-import { mockGoals } from '../../../../testdata/mockData';
+import { mockGoals } from '../../../../backend/src/sharedtestdata/mockData';
 
 describe('GoalComponent', () => {
   let component: GoalComponent;
