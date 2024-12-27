@@ -8,10 +8,10 @@
     "watch": "ng build --watch --configuration development",
     "staging_build": "ng build --configuration staging",
     "staging": "ng serve --host 0.0.0.0",
-    "test_headless": "ng test --watch=false --browsers=ChromeHeadless",
-    "test": "ng test",
+    "test_headless": "ng test --configuration staging --watch=false --browsers=ChromeHeadless",
+    "test": "ng test --configuration staging",
     "lint": "ng lint",
-    "coverage": "ng test --code-coverage"
+    "coverage": "ng test --configuration staging --code-coverage"
   },
   "private": true,
   "dependencies": {

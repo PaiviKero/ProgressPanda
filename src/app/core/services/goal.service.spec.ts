@@ -71,7 +71,7 @@ describe('GoalService', () => {
   });
 
   it('should handle error when backend returns 404', () => {
-    const goalId = 99;
+    const goalId = -66;
     const errorMessage = 'Error';
 
     service.getGoalById(goalId).subscribe({
@@ -87,11 +87,11 @@ describe('GoalService', () => {
   });
 
   it('should handle error on clientside', () => {
-    const goalId = 99;
+    const goalId = -99;
     const errorMessage = 'Error';
 
     service.getGoalById(goalId).subscribe({
-      next: () => fail('should have failed with 404'),
+      next: () => fail('should have failed with error'),
       error: (error: HttpErrorResponse) => {
         jasmine.debugLog('error ' + JSON.stringify(error));
         expect(error.status).withContext('status').toEqual(0);
