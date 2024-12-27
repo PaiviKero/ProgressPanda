@@ -6,4 +6,14 @@ module.exports = {
   },
   testPathIgnorePatterns: ['backend/src/utils/testing.ts'],
   coveragePathIgnorePatterns: ['backend/src/utils/testing.ts'],
+  coverageThreshold: {
+    global: {
+      functions: 100,
+      lines: 95,
+      statements: 95,
+    },
+  },
+  collectCoverage: true,
+  coverageDirectory: 'coverage',
+  coverageReporters: ['json-summary', 'text', 'lcov'],
 };

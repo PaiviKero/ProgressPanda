@@ -31,7 +31,24 @@ jobs:
       - name: Run linting
         run: npm run lint
       - name: Run tests
-        run: npm run test
+        run: npm run coverage
+      - name: Check Jest coverage thresholds
+        run: |
+          if [ -f coverage/coverage-summary.json ]; then
+            node -e "
+            const { total } = require('./coverage/coverage-summary.json');
+            const thresholds = { lines: 95, statements: 95, functions: 100 };
+            for (let key in thresholds) {
+              if (total[key].pct < thresholds[key]) {
+                console.error(\`ERROR: \${key} coverage is below threshold: \${total[key].pct}% < \${thresholds[key]}%\`);
+                process.exit(1);
+              }
+            }
+            ";
+          else
+            echo "ERROR: Coverage summary not found.";
+            exit 1;
+          fi
 
   test_frontend:
     name: Run Tests on frontend
@@ -53,6 +70,23 @@ jobs:
         run: npm run lint
       - name: Run tests
         run: npm run test_headless
+      - name: Check Karma coverage thresholds
+        run: |
+          if [ -f coverage/coverage-summary.json ]; then
+            node -e "
+            const { total } = require('./coverage/coverage-summary.json');
+            const thresholds = { lines: 100, statements: 100, functions: 100, branches: 100 };
+            for (let key in thresholds) {
+              if (total[key].pct < thresholds[key]) {
+                console.error(\`ERROR: \${key} coverage is below threshold: \${total[key].pct}% < \${thresholds[key]}%\`);
+                process.exit(1);
+              }
+            }
+            ";
+          else
+            echo "ERROR: Coverage summary not found.";
+            exit 1;
+          fi
 
   deploy_backend:
     name: Deploy backend
