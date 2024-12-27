@@ -6,10 +6,7 @@ import {
 } from '@angular/core/testing';
 
 import { GoalListComponent } from './goal-list.component';
-import {
-  mockGoals,
-  newMockGoal,
-} from '../../../../backend/src/services/mockData';
+import { mockGoals, newMockGoal } from '../../../../testdata/mockData';
 import { GoalService } from '../../core/services/goal.service';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AddGoalComponent } from './add-goal.component';
-import { newMockGoal } from '../../../../backend/src/services/mockData';
+import { newMockGoal } from '../../../../testdata/mockData';
 import { GoalService } from '../../core/services/goal.service';
 import { of } from 'rxjs';
 
