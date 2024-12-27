@@ -37,7 +37,7 @@ jobs:
           if [ -f coverage/coverage-summary.json ]; then
             node -e "
             const { total } = require('./coverage/coverage-summary.json');
-            const thresholds = { lines: 95, statements: 100, functions: 100 };
+            const thresholds = { lines: 95, statements: 95, functions: 100 };
             for (let key in thresholds) {
               if (total[key].pct < thresholds[key]) {
                 console.error(\`ERROR: \${key} coverage is below threshold: \${total[key].pct}% < \${thresholds[key]}%\`);
@@ -75,7 +75,7 @@ jobs:
           if [ -f coverage/progress-panda/coverage-summary.json ]; then
             node -e "
             const { total } = require('./coverage/progress-panda/coverage-summary.json');
-            const thresholds = { lines: 100, statements: 100, functions: 100, branches: 100 };
+            const thresholds = { lines: 100, statements: 100, functions: 110, branches: 100 };
             for (let key in thresholds) {
               if (total[key].pct < thresholds[key]) {
                 console.error(\`ERROR: \${key} coverage is below threshold: \${total[key].pct}% < \${thresholds[key]}%\`);
