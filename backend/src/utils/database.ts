@@ -1,6 +1,6 @@
 import { newDb } from 'pg-mem';
 import { Sequelize } from 'sequelize';
-import { createMockDataForDev } from '../services/mockData';
+import { createMockDataForDev } from './testing';
 
 const createDatabase = () => {
   if (
